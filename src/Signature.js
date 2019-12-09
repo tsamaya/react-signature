@@ -19,7 +19,6 @@ const styles = theme => ({
   signature: {
     border: '1px solid #ddd',
     borderRadius: '4px',
-    // backgroundColor: '#fcfcfc',
     padding: '5px',
     '&:hover': {
       boxShadow: '0 0 2px 1px rgba(0, 140, 186, 0.5)',
@@ -158,25 +157,29 @@ class Signature extends Component {
             Sorry buddy, get a better browser!
           </canvas>
         </Grid>
-        <Grid item xs={6}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={this.handleSubmit}
-            disabled={!signed}
-          >
-            Submit signature
-          </Button>
-        </Grid>
-        <Grid item xs={6}>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={this.handleClearCanvas}
-            disabled={!signed}
-          >
-            Clear signature
-          </Button>
+        <Grid item xs={12}>
+          <Grid container justify="flex-start" spacing={3}>
+            <Grid item>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={this.handleSubmit}
+                disabled={!signed}
+              >
+                Submit signature
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={this.handleClearCanvas}
+                disabled={!signed}
+              >
+                Clear signature
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item xs={12}>
           <TextField
@@ -191,7 +194,7 @@ class Signature extends Component {
           />
         </Grid>
         <Grid item xs={12}>
-          <Paper>
+          <Paper className={classes.control}>
             <img
               src={data}
               alt="Your signature will go here!"
