@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { Button, Grid } from "@material-ui/core";
+import { Button, Grid, Paper, TextField } from "@material-ui/core";
 
 const styles = theme => ({
   root: {
@@ -8,13 +8,18 @@ const styles = theme => ({
   },
   canvas: {
     border: "2px dotted #ccc",
-    borderRadius: "5px",
+    borderRadius: "4px",
     cursor: "crosshair",
     height: 160,
     width: 320
   },
   control: {
     padding: theme.spacing(2)
+  },
+  signature: {
+    border: "1px solid #ddd",
+    borderRadius: "4px",
+    padding: "5px"
   }
 });
 // const Signature = () => {
@@ -25,7 +30,8 @@ class Signature extends Component {
       signed: false,
       drawing: false,
       mousePos: { x: 0, y: 0 },
-      lastPos: { x: 0, y: 0 }
+      lastPos: { x: 0, y: 0 },
+      data: ""
     };
 
     this.canvas = React.createRef();
@@ -119,14 +125,16 @@ class Signature extends Component {
 
   handleClearCanvas(e) {
     this.canvas.current.width = this.canvas.current.width;
-    this.setState({ signed: false });
+    this.setState({ signed: false, data: "" });
   }
 
-  handleSubmit(e) {}
+  handleSubmit(e) {
+    this.setState({ data: this.canvas.current.toDataURL() });
+  }
 
   render() {
     const { classes } = this.props;
-    const { signed } = this.state;
+    const { data, signed } = this.state;
     return (
       <Grid container className={classes.root} spacing={2}>
         <Grid item xs={12}>
@@ -165,6 +173,27 @@ class Signature extends Component {
           >
             Clear signature
           </Button>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            rows="5"
+            variant="outlined"
+            multiline
+            fullWidth
+            label="Data URL"
+            value={data}
+            disabled
+            helperText="Data URL for your signature will go here!"
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Paper>
+            <img
+              src={data}
+              alt="Your signature will go here!"
+              className={classes.signature}
+            />
+          </Paper>
         </Grid>
       </Grid>
     );
