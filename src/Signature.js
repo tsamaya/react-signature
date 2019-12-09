@@ -31,6 +31,7 @@ class Signature extends Component {
     super(props);
     this.state = {
       signed: false,
+      submitted: false,
       drawing: false,
       mousePos: { x: 0, y: 0 },
       lastPos: { x: 0, y: 0 },
@@ -63,17 +64,17 @@ class Signature extends Component {
   initCanvas() {
     console.log('initCanvas()');
     this.ctx = this.canvas.current.getContext('2d');
-    this.ctx.strokeStyle = '#0055ff';
-    this.ctx.lineWidth = 2;
   }
 
   drawing(e) {
     const { drawing, mousePos, lastPos } = this.state;
     if (drawing) {
+      this.ctx.strokeStyle = '#0055ff';
+      this.ctx.lineWidth = 2;
       this.ctx.moveTo(lastPos.x, lastPos.y);
       this.ctx.lineTo(mousePos.x, mousePos.y);
       this.ctx.stroke();
-      this.setState({ lastPos: mousePos, signed: true });
+      this.setState({ lastPos: mousePos, signed: true, submitted: false });
     }
   }
 
@@ -82,7 +83,8 @@ class Signature extends Component {
   }
 
   getTouchPos(canvasDom, touchEvent) {
-    var rect = canvasDom.getBoundingClientRect();
+    const rect = canvasDom.getBoundingClientRect();
+    console.log('getTouchPos()', rect);
     return {
       x: touchEvent.touches[0].clientX - rect.left,
       y: touchEvent.touches[0].clientY - rect.top,
@@ -128,16 +130,16 @@ class Signature extends Component {
 
   handleClearCanvas(e) {
     this.canvas.current.width = this.canvas.current.width;
-    this.setState({ signed: false, data: '' });
+    this.setState({ data: '', signed: false, submitted: false });
   }
 
   handleSubmit(e) {
-    this.setState({ data: this.canvas.current.toDataURL() });
+    this.setState({ submitted: true, data: this.canvas.current.toDataURL() });
   }
 
   render() {
     const { classes } = this.props;
-    const { data, signed } = this.state;
+    const { data, signed, submitted } = this.state;
     return (
       <Grid container className={classes.root} spacing={2}>
         <Grid item xs={12}>
@@ -164,7 +166,7 @@ class Signature extends Component {
                 variant="contained"
                 color="primary"
                 onClick={this.handleSubmit}
-                disabled={!signed}
+                disabled={!signed || submitted}
               >
                 Submit signature
               </Button>
