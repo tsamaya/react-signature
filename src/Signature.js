@@ -10,8 +10,8 @@ const styles = theme => ({
     border: '2px dotted #ccc',
     borderRadius: '4px',
     cursor: 'crosshair',
-    height: 160,
-    width: 320,
+    width: 300,
+    height: 150,
   },
   control: {
     padding: theme.spacing(2),
@@ -78,13 +78,16 @@ class Signature extends Component {
     }
   }
 
-  getMousePos(e) {
-    return { x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY };
+  getMousePos(canvasDom, mouseEvent) {
+    const rect = canvasDom.getBoundingClientRect();
+    return {
+      x: mouseEvent.clientX - rect.left,
+      y: mouseEvent.clientY - rect.top,
+    };
   }
 
   getTouchPos(canvasDom, touchEvent) {
     const rect = canvasDom.getBoundingClientRect();
-    console.log('getTouchPos()', rect);
     return {
       x: touchEvent.touches[0].clientX - rect.left,
       y: touchEvent.touches[0].clientY - rect.top,
@@ -92,40 +95,37 @@ class Signature extends Component {
   }
 
   handleMouseDown(e) {
-    this.setState({ drawing: true, lastPos: this.getMousePos(e) });
+    // console.log('mousedown');
+    this.setState({
+      drawing: true,
+      lastPos: this.getMousePos(this.canvas.current, e),
+    });
   }
   handleMouseUp(e) {
+    // console.log('mouseup');
     this.setState({ drawing: false });
   }
   handleMouseMove(e) {
-    this.setState({ mousePos: this.getMousePos(e) });
+    // console.log('mousemove');
+    this.setState({ mousePos: this.getMousePos(this.canvas.current, e) });
     this.drawing(e);
   }
 
   handleTouchStart(e) {
-    e.preventDefault();
-    const mousePos = this.getTouchPos(this.canvas.current, e);
-    const touch = e.touches[0];
-    const mouseEvent = new MouseEvent('mousedown', {
-      clientX: touch.clientX,
-      clientY: touch.clientY,
-    });
-    this.canvas.current.dispatchEvent(mouseEvent);
-    this.setState({ mousePos });
+    console.log('touchstart');
+    const pos = this.getTouchPos(this.canvas.current, e);
+    this.setState({ drawing: true, lastPos: pos });
   }
 
   handleTouchEnd(e) {
-    const mouseEvent = new MouseEvent('mouseup', {});
-    this.canvas.current.dispatchEvent(mouseEvent);
+    // console.log('touchend');
+    this.setState({ drawing: false });
   }
 
   handleTouchMove(e) {
-    const touch = e.touches[0];
-    const mouseEvent = new MouseEvent('mousemove', {
-      clientX: touch.clientX,
-      clientY: touch.clientY,
-    });
-    this.canvas.current.dispatchEvent(mouseEvent);
+    // console.log('touchmove');
+    this.setState({ mousePos: this.getTouchPos(this.canvas.current, e) });
+    this.drawing(e);
   }
 
   handleClearCanvas(e) {
