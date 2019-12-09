@@ -1,18 +1,18 @@
-import React from "react";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { ThemeProvider } from "@material-ui/core/styles";
-import { Box, Container, Link, Typography } from "@material-ui/core";
-import theme from "./theme";
-import Signature from "./Signature";
+import React from 'react';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { Box, Container, Link, Typography } from '@material-ui/core';
+import theme from './theme';
+import Signature from './Signature';
 
 const Copyright = () => (
   <Typography variant="body2" color="textSecondary" align="center">
-    {"Copyright © "}
+    {'Copyright © '}
     <Link color="inherit" href="https://github.com/tsamaya/react-signature">
       tsamaya
-    </Link>{" "}
+    </Link>{' '}
     {new Date().getFullYear()}
-    {"."}
+    {'.'}
   </Typography>
 );
 

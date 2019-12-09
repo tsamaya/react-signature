@@ -1,26 +1,30 @@
-import React, { Component } from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { Button, Grid, Paper, TextField } from "@material-ui/core";
+import React, { Component } from 'react';
+import withStyles from '@material-ui/core/styles/withStyles';
+import { Button, Grid, Paper, TextField } from '@material-ui/core';
 
 const styles = theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   canvas: {
-    border: "2px dotted #ccc",
-    borderRadius: "4px",
-    cursor: "crosshair",
+    border: '2px dotted #ccc',
+    borderRadius: '4px',
+    cursor: 'crosshair',
     height: 160,
-    width: 320
+    width: 320,
   },
   control: {
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
   },
   signature: {
-    border: "1px solid #ddd",
-    borderRadius: "4px",
-    padding: "5px"
-  }
+    border: '1px solid #ddd',
+    borderRadius: '4px',
+    // backgroundColor: '#fcfcfc',
+    padding: '5px',
+    '&:hover': {
+      boxShadow: '0 0 2px 1px rgba(0, 140, 186, 0.5)',
+    },
+  },
 });
 // const Signature = () => {
 class Signature extends Component {
@@ -31,7 +35,7 @@ class Signature extends Component {
       drawing: false,
       mousePos: { x: 0, y: 0 },
       lastPos: { x: 0, y: 0 },
-      data: ""
+      data: '',
     };
 
     this.canvas = React.createRef();
@@ -58,9 +62,9 @@ class Signature extends Component {
   }
 
   initCanvas() {
-    console.log("initCanvas()");
-    this.ctx = this.canvas.current.getContext("2d");
-    this.ctx.strokeStyle = "#0055ff";
+    console.log('initCanvas()');
+    this.ctx = this.canvas.current.getContext('2d');
+    this.ctx.strokeStyle = '#0055ff';
     this.ctx.lineWidth = 2;
   }
 
@@ -82,7 +86,7 @@ class Signature extends Component {
     var rect = canvasDom.getBoundingClientRect();
     return {
       x: touchEvent.touches[0].clientX - rect.left,
-      y: touchEvent.touches[0].clientY - rect.top
+      y: touchEvent.touches[0].clientY - rect.top,
     };
   }
 
@@ -101,31 +105,31 @@ class Signature extends Component {
     e.preventDefault();
     const mousePos = this.getTouchPos(this.canvas.current, e);
     const touch = e.touches[0];
-    const mouseEvent = new MouseEvent("mousedown", {
+    const mouseEvent = new MouseEvent('mousedown', {
       clientX: touch.clientX,
-      clientY: touch.clientY
+      clientY: touch.clientY,
     });
     this.canvas.current.dispatchEvent(mouseEvent);
     this.setState({ mousePos });
   }
 
   handleTouchEnd(e) {
-    const mouseEvent = new MouseEvent("mouseup", {});
+    const mouseEvent = new MouseEvent('mouseup', {});
     this.canvas.current.dispatchEvent(mouseEvent);
   }
 
   handleTouchMove(e) {
     const touch = e.touches[0];
-    const mouseEvent = new MouseEvent("mousemove", {
+    const mouseEvent = new MouseEvent('mousemove', {
       clientX: touch.clientX,
-      clientY: touch.clientY
+      clientY: touch.clientY,
     });
     this.canvas.current.dispatchEvent(mouseEvent);
   }
 
   handleClearCanvas(e) {
     this.canvas.current.width = this.canvas.current.width;
-    this.setState({ signed: false, data: "" });
+    this.setState({ signed: false, data: '' });
   }
 
   handleSubmit(e) {
