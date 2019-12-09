@@ -1,33 +1,35 @@
 import React from "react";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-import Link from "@material-ui/core/Link";
-// import ProTip from "./ProTip";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { ThemeProvider } from "@material-ui/core/styles";
+import { Box, Container, Link, Typography } from "@material-ui/core";
+import theme from "./theme";
+import Signature from "./Signature";
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://github.com/tsamaya">
-        tsamaya
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+const Copyright = () => (
+  <Typography variant="body2" color="textSecondary" align="center">
+    {"Copyright © "}
+    <Link color="inherit" href="https://github.com/tsamaya/react-signature">
+      tsamaya
+    </Link>{" "}
+    {new Date().getFullYear()}
+    {"."}
+  </Typography>
+);
 
-export default function App() {
-  return (
-    <Container maxWidth="sm">
+const App = () => (
+  <ThemeProvider theme={theme}>
+    {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+    <CssBaseline />
+    <Container maxWidth="md">
       <Box my={4}>
         <Typography variant="h4" component="h1" gutterBottom>
           Signature
         </Typography>
-        {/* <ProTip /> */}
+        <Signature />
         <Copyright />
       </Box>
     </Container>
-  );
-}
+  </ThemeProvider>
+);
+
+export default App;
